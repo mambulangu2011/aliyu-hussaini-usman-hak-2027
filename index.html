@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ha">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JABO 2027 - Aliyu Hussaini Usman | Hadejia Auyo Kafin Hausa APC</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+<style>body{font-family:'Outfit',sans-serif} .active{background:#0f766e!important;color:#fff!important}</style>
+</head>
+<body class="bg-slate-50">
+<header class="bg-gradient-to-br from-emerald-800 via-teal-700 to-emerald-700 text-white p-4 sticky top-0 z-50 shadow">
+<div class="max-w-6xl mx-auto flex justify-between items-center">
+<div class="flex gap-3 items-center">
+<div class="w-14 h-14 bg-white text-emerald-800 rounded-full flex items-center justify-center font-black text-xl">AHU</div>
+<div>
+<h1 class="font-black text-[20px] leading-none">ALIYU HUSSAINI USMAN</h1>
+<p class="text-[11px] font-bold opacity-95">JABO 2027 - MURYAR AL'UMMA</p>
+<p class="text-[10px] opacity-80">APC | Hadejia - Auyo - Kafin Hausa Federal Constituency | House of Reps 2027</p>
+</div>
+</div>
+<button onclick="speakCurrent()" class="bg-white/20 px-3 py-2 rounded-full text-xs font-bold">🔊 Karanta</button>
+</div>
+</header>
+<div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-4 p-3">
+<aside class="bg-white rounded-2xl p-3 h-fit md:sticky top-[88px] shadow">
+<p class="text-[10px] font-bold text-slate-400 tracking-widest mb-2">MENU 12 - FULL NAME - HAK APC</p>
+<div id="menuList" class="space-y-1"></div>
+<div class="mt-4 p-3 bg-emerald-50 rounded-xl">
+<div class="flex justify-between">
+<div><p class="text-xs font-bold text-emerald-800">Magoya Baya HAK</p><p id="count" class="text-2xl font-black text-emerald-700">0</p></div>
+<div class="text-right"><p class="text-[10px] bg-green-600 text-white px-2 py-1 rounded-full">APC</p><p class="text-[10px] mt-1">AHU 2027</p></div>
+</div>
+<input id="searchWards" oninput="filterWards()" placeholder="🔍 Nema Ward - Misali: Bulangu" class="w-full mt-3 p-2 border rounded-xl text-xs">
+</div>
+</aside>
+<main class="md:col-span-2">
+<div class="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-100 rounded-2xl p-4 mb-3 shadow">
+<p class="text-[10px] font-bold tracking-widest text-emerald-600">MA'ANAR WANNAN MENU - ALIYU HUSSAINI USMAN</p>
+<h2 id="mTitle" class="font-black text-lg text-slate-800"></h2>
+<p id="mText" class="text-sm text-slate-600 mt-1"></p>
+</div>
+<div class="bg-white rounded-2xl p-5 shadow min-h-[500px]">
+<div id="detail"></div>
+<div class="mt-6 flex gap-2">
+<button onclick="prev()" class="flex-1 bg-slate-100 py-2.5 rounded-xl text-sm font-bold">⬅️ Baya</button>
+<button onclick="speakCurrent()" class="flex-1 bg-emerald-700 text-white py-2.5 rounded-xl text-sm font-bold">🔊 Murya</button>
+<button onclick="next()" class="flex-1 bg-slate-800 text-white py-2.5 rounded-xl text-sm font-bold">Gaba ➡️</button>
+</div>
+</div>
+<div id="cardBox" class="hidden mt-4 bg-emerald-800 text-white rounded-2xl p-4"><h3 class="font-black">🎫 Katin Magoyin Baya - AHU - HAK APC</h3><div id="cardData" class="mt-2 bg-white/10 p-3 rounded-xl text-sm"></div></div>
+</main>
+</div>
+<script>
+const allWards = [
+ {lga:"Hadejia", ward:"Atafi"}, {lga:"Hadejia", ward:"Dubantu"}, {lga:"Hadejia", ward:"Gagulmari"}, {lga:"Hadejia", ward:"Kasuwar Kofa"}, {lga:"Hadejia", ward:"Kasuwar Kuda"}, {lga:"Hadejia", ward:"Matsaro"}, {lga:"Hadejia", ward:"Majema"}, {lga:"Hadejia", ward:"Rumfa"}, {lga:"Hadejia", ward:"Sabon Garu"}, {lga:"Hadejia", ward:"Yankoli"}, {lga:"Hadejia", ward:"Yayari"},
+ {lga:"Auyo", ward:"Auyo"}, {lga:"Auyo", ward:"Auyokayi"}, {lga:"Auyo", ward:"Ayama"}, {lga:"Auyo", ward:"Ayan"}, {lga:"Auyo", ward:"Gatafa"}, {lga:"Auyo", ward:"Gamafoi"}, {lga:"Auyo", ward:"Gamsarka"}, {lga:"Auyo", ward:"Kafur"}, {lga:"Auyo", ward:"Tsidir"}, {lga:"Auyo", ward:"Unik"},
+ {lga:"Kafin Hausa", ward:"Jabo"}, {lga:"Kafin Hausa", ward:"Zago"}, {lga:"Kafin Hausa", ward:"Sarawa"}, {lga:"Kafin Hausa", ward:"Ruba"}, {lga:"Kafin Hausa", ward:"Majawa"}, {lga:"Kafin Hausa", ward:"Bulangu"}, {lga:"Kafin Hausa", ward:"Kazalewa"}, {lga:"Kafin Hausa", ward:"Dumadumin Toka"}, {lga:"Kafin Hausa", ward:"Gafaya"}, {lga:"Kafin Hausa", ward:"Mezan"}, {lga:"Kafin Hausa", ward:"Kafin Hausa"}
+];
+const menus=[
+{title:"1. Tarihin AHU", mTitle:"Waye Aliyu Hussaini Usman? - Jabo", mText:"Cikakken suna: Aliyu Hussaini Usman (Jabo). Dan Bulangu, Kafin Hausa LGA. Dan takarar APC mai wakiltar Hadejia, Auyo, Kafin Hausa Federal Constituency 2027.", content:`<h3 class="font-black text-2xl">ALIYU HUSSAINI USMAN</h3><p class="text-sm font-bold text-emerald-700">A.K.A JABO - APC</p><p class="text-xs bg-green-600 text-white inline-block px-3 py-1 rounded-full mt-2">Hadejia | Auyo | Kafin Hausa Federal Constituency - House of Reps 2027</p><div class="mt-4 text-sm space-y-2"><p>• <b>Cikakken Suna:</b> Aliyu Hussaini Usman</p><p>• <b>Lakabi:</b> Jabo</p><p>• <b>Asali:</b> Bulangu, Kafin Hausa LGA, Jigawa</p><p>• <b>Jam'iyya:</b> APC</p><p>• <b>Mazaba:</b> Hadejia (11 Wards), Auyo (10 Wards), Kafin Hausa (11 Wards) = 32 Wards</p><div class="p-4 bg-emerald-50 rounded-xl mt-3"><p class="font-black">Saƙon AHU:</p><p class="italic">"Ni Aliyu Hussaini Usman - Jabo - ba zan manta da kowanne Ward a Hadejia, Auyo, Kafin Hausa ba. Wannan app din na ku ne."</p></div></div>`},
+{title:"2. Manifesto HAK", mTitle:"Me AHU zai yi wa Hadejia, Auyo, Kafin Hausa?", mText:"Manifesto 5 da ya shafi kowanne LGA a HAK - Daga Aliyu Hussaini Usman.", content:`<h3 class="font-black">Manifesto 5 - AHU - HAK 2027</h3><div class="mt-3 space-y-3 text-sm"><div class="p-3 bg-emerald-50 rounded-xl"><b>1. Hadejia:</b> Farfado da Kasuwar Kofa & Kuda, Boreholes 50</div><div class="p-3 bg-blue-50 rounded-xl"><b>2. Auyo:</b> Hanyar Auyo-Ayama-Tsidir, tallafin taki</div><div class="p-3 bg-amber-50 rounded-xl"><b>3. Kafin Hausa:</b> Makarantu a Jabo, Bulangu, Majawa, Ruba, WAEC free 1000</div><div class="p-3 bg-purple-50 rounded-xl"><b>4. Matasa HAK:</b> JIGAWA EXPORT HUB - Aiki ga matasa 500</div><div class="p-3 bg-rose-50 rounded-xl"><b>5. Ofis HAK:</b> Ofishi 3 - Hadejia, Auyo, Kafin Hausa</div></div>`},
+{title:"3. Ayyuka a HAK", mTitle:"Abin da Aliyu Hussaini Usman ya riga ya yi", mText:"Kafin neman kujera - AHU ya riga ya taimaki HAK.", content:`<div class="space-y-2 text-sm"><div class="p-3 border rounded-xl">✅ Bulangu, Kafin Hausa - Dalibai 100</div><div class="p-3 border rounded-xl">✅ Jabo Ward - Rijiya da masallaci</div><div class="p-3 border rounded-xl">✅ Hadejia - Marayu - Atafi, Dubantu</div><div class="p-3 border rounded-xl">✅ Auyo - Taki - Auyo, Auyokayi</div></div>`},
+{title:"4. Muryar HAK 🎙️", mTitle:"Fadi bukatar Ward dinka da murya - AHU zai ji", mText:"Zaɓi LGA da Ward sannan ka yi magana da Hausa.", content:`<div class="text-center"><div class="grid grid-cols-2 gap-2 mb-3"><select id="lgaSelect" onchange="updateWardSelect()" class="p-2 border rounded-xl text-sm"><option value="">Zaɓi LGA</option><option>Hadejia</option><option>Auyo</option><option>Kafin Hausa</option></select><select id="wardSelect" class="p-2 border rounded-xl text-sm"><option>Zaɓi Ward</option></select></div><button id="recBtn" onclick="toggleRec()" class="w-24 h-24 bg-red-600 text-white rounded-full text-3xl mx-auto block">🎙️</button><p id="recStatus" class="text-xs mt-2 text-slate-500">Danna don fara magana</p><textarea id="voiceText" class="w-full mt-4 p-3 border rounded-xl text-sm" rows="3" placeholder="Mu a Bulangu Ward muna bukatar makaranta..."></textarea><button onclick="submitVoice()" class="w-full mt-2 bg-emerald-700 text-white py-2.5 rounded-xl font-bold">Tura Zuwa AHU Team - HAK</button><div id="voiceList" class="mt-4 text-left space-y-2"></div></div>`},
+{title:"5. Duk Wards 32 - Search 🔍", mTitle:"Duk Wards na Hadejia (11), Auyo (10), Kafin Hausa (11) - 32 gaba daya", mText:"Nema Ward dinka - Danna ka ga bukatarsa. Duk na Aliyu Hussaini Usman.", content:`<div><input id="wardSearchInner" oninput="filterWardsInner()" placeholder="🔍 Nema Ward - Bulangu, Atafi, Auyo..." class="w-full p-3 border rounded-xl text-sm mb-3"><div id="wardsGrid" class="grid grid-cols-1 gap-2 max-h-[400px] overflow-auto"></div></div>`},
+{title:"6. Register APC HAK", mTitle:"Yi Register - Samu Katin AHU - APC", mText:"Ka zama magoyin bayan Aliyu Hussaini Usman na gaskiya a HAK.", content:`<div class="space-y-3"><select id="sLGA" onchange="updateRegWard()" class="w-full p-3 border rounded-xl text-sm"><option value="">Zaɓi LGA - Hadejia/Auyo/Kafin Hausa</option><option>Hadejia</option><option>Auyo</option><option>Kafin Hausa</option></select><select id="sWard" class="w-full p-3 border rounded-xl text-sm"><option value="">Zaɓi Ward - 32 Wards</option></select><input id="sName" placeholder="Cikakken Suna" class="w-full p-3 border rounded-xl text-sm"><input id="sPhone" placeholder="WhatsApp" class="w-full p-3 border rounded-xl text-sm"><button onclick="register()" class="w-full bg-emerald-700 text-white py-3 rounded-xl font-black">✅ Yi Register - AHU HAK APC</button></div>`},
+{title:"7. Live da AHU 📡", mTitle:"Live Town Hall - Aliyu Hussaini Usman", mText:"Kowace Juma'a 8pm - AHU zai shigo app.", content:`<div class="text-center p-5 bg-slate-900 text-white rounded-2xl"><p class="font-black text-lg">🔴 LIVE - ALIYU HUSSAINI USMAN</p><p class="text-sm mt-2">Kowace Juma'a - 8:00 PM - HAK Federal</p><button class="mt-4 bg-white text-slate-900 px-6 py-2 rounded-full text-sm font-bold">Shiga Live</button></div>`},
+{title:"8. Labarai HAK", mTitle:"Labaran Aliyu Hussaini Usman a HAK", mText:"Duk abin da AHU yayi a Hadejia, Auyo, Kafin Hausa.", content:`<div class="space-y-3 text-sm"><div class="p-3 border rounded-xl">📰 AHU - Hadejia - Kasuwar Kofa - Oct 2026</div><div class="p-3 border rounded-xl">📰 APC Auyo - Auyokayi Ward</div><div class="p-3 border rounded-xl">📰 Bulangu, Kafin Hausa - Jabo Ward</div></div>`},
+{title:"9. Yadda ake Zabe", mTitle:"Kuri'arka - Karfinka - HAK - APC", mText:"Ilimin zabe - Hadejia, Auyo, Kafin Hausa - APC - AHU.", content:`<div class="p-4 bg-amber-50 rounded-xl text-sm"><p><b>1.</b> PVC - Hadejia, Auyo, Kafin Hausa</p><p><b>2.</b> Zabi APC - Tsintsiya</p><p><b>3.</b> Zabi ALIYU HUSSAINI USMAN (JABO)</p><p><b>4.</b> Ka kare kuri'arka - Kowane Ward 32</p></div>`},
+{title:"10. Tuntube AHU", mTitle:"Tuntuɓi Team din Aliyu Hussaini Usman", mText:"Team din AHU a HAK.", content:`<div class="space-y-2 text-sm"><div class="block p-3 bg-green-50 rounded-xl">💬 WhatsApp - AHU HAK Team</div><div class="block p-3 bg-blue-50 rounded-xl">📞 0800-AHU-HAK</div><div class="block p-3 bg-slate-50 rounded-xl">📧 aliyu.hussaini.usman.hak@gmail.com</div></div>`},
+{title:"11. Addu'a", mTitle:"Addu'a ga Aliyu Hussaini Usman da HAK", mText:"Mu yi addu'a ga HAK.", content:`<div class="p-4 bg-emerald-50 rounded-xl text-center"><p class="font-black">اللهم ولي علينا خيارنا</p><p class="text-sm mt-2">"Ya Allah ka ba HAK wakili na gari - Aliyu Hussaini Usman"</p></div>`},
+{title:"12. Yada App HAK", mTitle:"Yada App din AHU a HAK - 32 Wards", mText:"Yada app din Aliyu Hussaini Usman a HAK.", content:`<div class="text-center"><button onclick="shareApp()" class="w-full bg-emerald-700 text-white py-3 rounded-xl font-black">📤 Yada - AHU - HAK</button><p class="text-xs mt-2">aliu-hussaini-usman-hak-2027.onrender.com</p></div>`}
+];
+let current=0; let supporters=JSON.parse(localStorage.getItem('ahu_hak_supporters')||'[]'); let voices=JSON.parse(localStorage.getItem('ahu_hak_voices')||'[]');
+function renderMenu(){ document.getElementById('menuList').innerHTML=menus.map((m,i)=>`<button onclick="selectMenu(${i})" class="w-full text-left px-3 py-2.5 rounded-xl text-sm font-semibold ${i===current?'active':'bg-slate-50'}">${m.title}</button>`).join(''); document.getElementById('count').innerText=supporters.length; }
+function selectMenu(i){ current=i; renderMenu(); document.getElementById('mTitle').innerText=menus[i].mTitle; document.getElementById('mText').innerText=menus[i].mText; document.getElementById('detail').innerHTML=menus[i].content; if(i===4||i===3||i===5) setTimeout(()=>{renderWardsGrid(allWards); renderVoices();},100); }
+function next(){ if(current<menus.length-1) selectMenu(current+1); } function prev(){ if(current>0) selectMenu(current-1); }
+function speakCurrent(){ const m=menus[current]; if('speechSynthesis' in window){ const u=new SpeechSynthesisUtterance(m.mTitle+'. '+m.mText); u.lang='ha-NG'; speechSynthesis.speak(u);} }
+function renderWardsGrid(list){ const grid=document.getElementById('wardsGrid'); if(!grid) return; grid.innerHTML=list.map(w=>`<div class="p-3 bg-white border rounded-xl flex justify-between items-center"><div><p class="font-bold text-sm">${w.ward}</p><p class="text-[11px] text-slate-500">${w.lga} LGA</p></div><button onclick="selectWardFromGrid('${w.lga}','${w.ward}')" class="text-[10px] bg-emerald-50 text-emerald-700 px-2 py-1 rounded-full">Zaɓi</button></div>`).join(''); }
+function filterWards(){ const q=document.getElementById('searchWards').value.toLowerCase(); const filtered=allWards.filter(w=>w.ward.toLowerCase().includes(q)||w.lga.toLowerCase().includes(q)); if(current===4) renderWardsGrid(filtered); else { selectMenu(4); setTimeout(()=>renderWardsGrid(filtered),100); } }
+function filterWardsInner(){ const q=document.getElementById('wardSearchInner').value.toLowerCase(); renderWardsGrid(allWards.filter(w=>w.ward.toLowerCase().includes(q)||w.lga.toLowerCase().includes(q))); }
+function updateWardSelect(){ const lga=document.getElementById('lgaSelect').value; const sel=document.getElementById('wardSelect'); const wards=allWards.filter(w=>w.lga===lga).map(w=>`<option>${w.ward}</option>`).join(''); sel.innerHTML='<option>Zaɓi Ward</option>'+wards; }
+function updateRegWard(){ const lga=document.getElementById('sLGA').value; const sel=document.getElementById('sWard'); const wards=allWards.filter(w=>w.lga===lga).map(w=>`<option>${w.ward}</option>`).join(''); sel.innerHTML='<option>Zaɓi Ward - 32 Wards</option>'+wards; }
+function selectWardFromGrid(lga,ward){ document.getElementById('sLGA').value=lga; updateRegWard(); setTimeout(()=>{document.getElementById('sWard').value=ward; selectMenu(5);},200); }
+function register(){ const lga=document.getElementById('sLGA')?.value||''; const ward=document.getElementById('sWard')?.value||''; const name=document.getElementById('sName').value.trim(); const phone=document.getElementById('sPhone').value.trim(); if(!name||!ward||!lga){ alert('Cika LGA, Ward, Suna'); return; } const data={name,ward,lga,phone,id:Date.now()}; supporters.push(data); localStorage.setItem('ahu_hak_supporters', JSON.stringify(supporters)); renderMenu(); document.getElementById('cardBox').classList.remove('hidden'); document.getElementById('cardData').innerHTML=`<p class="font-black text-lg">ALIYU HUSSAINI USMAN</p><p><b>Suna:</b> ${name}</p><p><b>LGA/Ward:</b> ${lga} / ${ward}</p><p><b>Jam'iyya:</b> APC - HAK Federal</p><p><b>ID:</b> AHU-HAK-${data.id.toString().slice(-6)}</p>`; alert('Alhamdulillah! Ka zama magoyin bayan AHU!'); }
+let rec=false; let recognition; function toggleRec(){ const SR=window.SpeechRecognition||window.webkitSpeechRecognition; if(!SR){ alert('Chrome kawai'); return; } if(!rec){ recognition=new SR(); recognition.lang='ha-NG'; recognition.onstart=()=>{rec=true; document.getElementById('recBtn').innerText='⏹️';}; recognition.onresult=(e)=>{document.getElementById('voiceText').value=e.results[0][0].transcript;}; recognition.onend=()=>{rec=false; document.getElementById('recBtn').innerText='🎙️';}; recognition.start(); } else { recognition.stop(); } }
+function submitVoice(){ const txt=document.getElementById('voiceText').value.trim(); const lga=document.getElementById('lgaSelect')?.value||'HAK'; const ward=document.getElementById('wardSelect')?.value||''; if(!txt){ alert('Yi magana'); return; } voices.push({text:txt,lga,ward,date:new Date().toLocaleString()}); localStorage.setItem('ahu_hak_voices', JSON.stringify(voices)); document.getElementById('voiceText').value=''; renderVoices(); alert('Bukatar ka ta je - '+lga+' / '+ward); }
+function renderVoices(){ const box=document.getElementById('voiceList'); if(!box) return; box.innerHTML=voices.slice(-5).reverse().map(v=>`<div class="p-2 bg-slate-50 rounded-xl text-xs"><p>"${v.text}"</p><p class="text-[10px] text-slate-400">${v.lga} / ${v.ward} - ${v.date}</p></div>`).join('')||''; }
+function shareApp(){ const url='https://aliu-hussaini-usman-hak-2027.onrender.com'; if(navigator.share){ navigator.share({title:'ALIYU HUSSAINI USMAN - HAK', text:'App na Aliyu Hussaini Usman Jabo - Hadejia Auyo Kafin Hausa APC', url}); } else { navigator.clipboard.writeText(url); alert('Link an kwafa: '+url); } }
+renderMenu(); selectMenu(0); renderWardsGrid(allWards);
+</script>
+</body>
+</html>
